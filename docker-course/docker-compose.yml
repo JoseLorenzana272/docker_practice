@@ -1,10 +1,10 @@
 services:
-  ubuntu_image:
-    image: ubuntu # This is the image that we want to use
+  python_image: # This is the name of the service
+    image: python # This is the image that we want to use
     tty: true # This is to keep the container running, like the flags -it
-    container_name: ubuntu # This is the name of the container
+    container_name: python # This is the name of the container
     volumes:
-      - ./main.py:/main.py # This is to mount the main.py file to the container
+      - .:/scripts # This is to mount the current directory to the /scripts directory of the container
 
 
   redis_image:
@@ -12,12 +12,6 @@ services:
     container_name: redis
     ports:
       - "6379:6379" # This is to map the port 6379 of the container to the port 6379 of the host machine
-
-  nginx_image:
-    image: nginx
-    container_name: nginx
-    ports:
-      - "80:80" # This is to map the port 80 of the container to the port 80 of the host machine
 
   mysql_image:
     image: mysql
@@ -27,7 +21,20 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql # This is to create a volume for the mysql container
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # This is to set the root password for the mysql container
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # This is to set the environment variable MYSQL_ROOT_PASSWORD to the value of root
+    
+  phpmyadmin_image:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8085:80" # This is to map the port 80 of the container to the port 8080 of the host machine
+    environment:
+      - PMA_HOST=mysql # This is to set the environment variable PMA_HOST to the value of mysql
 
+  #To build the image from the Dockerfile
+  node_custom_image:
+    build:
+      context: .
+      
 volumes:
   mysql_data: # This is to create a volume for the mysql container
