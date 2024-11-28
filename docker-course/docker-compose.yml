@@ -1,0 +1,33 @@
+services:
+  ubuntu_image:
+    image: ubuntu # This is the image that we want to use
+    tty: true # This is to keep the container running, like the flags -it
+    container_name: ubuntu # This is the name of the container
+    volumes:
+      - ./main.py:/main.py # This is to mount the main.py file to the container
+
+
+  redis_image:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379" # This is to map the port 6379 of the container to the port 6379 of the host machine
+
+  nginx_image:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80" # This is to map the port 80 of the container to the port 80 of the host machine
+
+  mysql_image:
+    image: mysql
+    container_name: mysql
+    ports:
+      - "3312:3306" # This is to map the port 3306 of the container to the port 3306 of the host machine
+    volumes:
+      - mysql_data:/var/lib/mysql # This is to create a volume for the mysql container
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # This is to set the root password for the mysql container
+
+volumes:
+  mysql_data: # This is to create a volume for the mysql container
