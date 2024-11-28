@@ -1,1 +1,1 @@
-# docker_practice
+# Initial practice with Docker 🐋 & Docker Compose 🐙
